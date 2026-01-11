@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kq"
+version = "0.1.0"
+description = "KQL CLI - Query Azure Data Explorer from the command line"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Your Name" }
+]
+keywords = ["kql", "kusto", "azure", "data-explorer", "adx", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "azure-kusto-data>=4.0.0",
+    "azure-identity>=1.15.0",
+    "pyyaml>=6.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+kq = "kq.cli:main"
+
+[project.urls]
+Documentation = "https://github.com/cptfinch/kq#readme"
+Source = "https://github.com/cptfinch/kq"
+Issues = "https://github.com/cptfinch/kq/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kq"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/kq/queries" = "kq/queries"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README.md",
+]

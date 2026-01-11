@@ -1,0 +1,73 @@
+name: examples
+description: Example queries to get started with kq
+
+queries:
+  - name: tables
+    description: List all tables in the database
+    safety: safe
+    query: |
+      .show tables
+    example: ""
+
+  - name: schema
+    description: Show schema for a table
+    safety: safe
+    parameters:
+      - name: table
+        description: Table name
+        required: true
+    query: |
+      {table}
+      | getschema
+    example: "MyTable"
+
+  - name: sample
+    description: Get sample rows from a table
+    safety: safe
+    parameters:
+      - name: table
+        description: Table name
+        required: true
+      - name: count
+        description: Number of rows
+        default: "10"
+    query: |
+      {table}
+      | take {count}
+    example: "MyTable 5"
+
+  - name: count
+    description: Count rows in a table (with optional time filter)
+    safety: caution
+    parameters:
+      - name: table
+        description: Table name
+        required: true
+      - name: hours
+        description: Hours to look back (optional)
+        default: "24"
+    query: |
+      {table}
+      | where Timestamp > ago({hours}h)
+      | count
+    example: "MyTable 24"
+
+  - name: columns
+    description: List distinct values in a column
+    safety: caution
+    parameters:
+      - name: table
+        description: Table name
+        required: true
+      - name: column
+        description: Column name
+        required: true
+      - name: hours
+        description: Hours to look back
+        default: "24"
+    query: |
+      {table}
+      | where Timestamp > ago({hours}h)
+      | distinct {column}
+      | order by {column} asc
+    example: "MyTable Category 24"
