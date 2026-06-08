@@ -41,3 +41,8 @@ htmlcov/
 
 # Build
 *.whl
+
+# IBA-specific queries live in the private knowledge-base repo, not here
+KQL snippets.md
+*.snippets.md
+queries/
