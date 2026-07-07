@@ -10,6 +10,8 @@ unit-tested against a plain object. They expect a result table that quacks like
 - ``.to_dict()`` — returns ``{"data": [ {column: value}, ... ]}``
 """
 
+import csv
+import io
 import json
 
 MAX_TABLE_ROWS = 50
@@ -54,23 +56,22 @@ def format_json(results) -> str:
 
 
 def format_csv(results) -> str:
-    """Format results as CSV (RFC 4180-style quoting)."""
+    """Format results as CSV using the stdlib ``csv`` module (RFC 4180).
+
+    Headers are always quoted for stable, greppable output; row cells use
+    minimal quoting so numbers and plain strings stay bare. The ``csv`` module
+    handles every quoting edge case (embedded quotes/commas/CR/LF) correctly.
+    """
     if not results:
         return ""
 
-    lines = []
+    output = io.StringIO()
     headers = [col.column_name for col in results.columns]
-    lines.append(",".join(f'"{h}"' for h in headers))
+    csv.writer(output, quoting=csv.QUOTE_ALL, lineterminator="\n").writerow(headers)
 
+    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
     for row in results:
-        values = []
-        for v in row:
-            s = str(v) if v is not None else ""
-            if '"' in s:
-                s = s.replace('"', '""')
-            if "," in s or '"' in s or "\n" in s:
-                s = f'"{s}"'
-            values.append(s)
-        lines.append(",".join(values))
+        writer.writerow([str(v) if v is not None else "" for v in row])
 
-    return "\n".join(lines)
+    # Match the previous formatter's contract: no trailing newline.
+    return output.getvalue().removesuffix("\n")

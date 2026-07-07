@@ -73,5 +73,22 @@ def test_csv_quotes_embedded_newline():
     assert '"line1\nline2"' in out
 
 
+def test_csv_escapes_quotes_in_headers():
+    # A quote in a column name must be doubled, not emitted raw.
+    table = FakeResultTable(['My "Special" Column'], [["x"]])
+    assert format_csv(table).splitlines()[0] == '"My ""Special"" Column"'
+
+
+def test_csv_quotes_bare_carriage_return():
+    # A lone \r (no \n) must still force quoting per RFC 4180.
+    table = FakeResultTable(["v"], [["a\rb"]])
+    out = format_csv(table)
+    assert '"a\rb"' in out
+
+
+def test_csv_no_trailing_newline(simple_table):
+    assert not format_csv(simple_table).endswith("\n")
+
+
 def test_csv_empty():
     assert format_csv(None) == ""
