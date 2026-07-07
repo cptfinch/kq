@@ -42,7 +42,10 @@ htmlcov/
 # Build
 *.whl
 
-# IBA-specific queries live in the private knowledge-base repo, not here
+# IBA-specific queries live in the private knowledge-base repo, not here.
+# Anchored to the repo root so it never matches the bundled package data
+# in src/kq/queries/.
 KQL snippets.md
 *.snippets.md
-queries/
+/queries/
+/.kq/

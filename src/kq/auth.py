@@ -9,9 +9,9 @@ from pathlib import Path
 # Suppress noisy azure-identity credential chain warnings
 logging.getLogger("azure.identity").setLevel(logging.ERROR)
 
-from azure.identity import (
-    AzureCliCredential,
+from azure.identity import (  # noqa: E402  (imported after logger is quieted)
     AuthenticationRecord,
+    AzureCliCredential,
     ClientSecretCredential,
     DeviceCodeCredential,
     TokenCachePersistenceOptions,
@@ -135,10 +135,10 @@ def login(cluster_url: str, device_code=False):
         else:
             expires = str(token.expires_on)
 
-        print(f"\nAuthentication successful!")
+        print("\nAuthentication successful!")
         print(f"  Expires: {expires}")
         print(f"  Auth record saved to {AUTH_RECORD_PATH}")
-        print(f"  Subsequent queries will authenticate silently")
+        print("  Subsequent queries will authenticate silently")
         return True
     except Exception as e:
         print(f"Authentication failed: {e}", file=sys.stderr)

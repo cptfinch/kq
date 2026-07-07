@@ -11,4 +11,4 @@ Usage:
     kq "PLC | take 5"           # Run raw KQL
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"

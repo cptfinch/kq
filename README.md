@@ -1,14 +1,23 @@
 # kq
 
-KQL CLI - Query Azure Data Explorer from the command line.
+[![CI](https://github.com/cptfinch/kq/actions/workflows/ci.yml/badge.svg)](https://github.com/cptfinch/kq/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/kql-cli.svg)](https://pypi.org/project/kql-cli/)
+[![Python versions](https://img.shields.io/pypi/pyversions/kql-cli.svg)](https://pypi.org/project/kql-cli/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Like `jq` for JSON, but for Kusto/KQL.
+KQL CLI — query Azure Data Explorer (Kusto) from the command line.
+
+Like `jq` for JSON, but for Kusto/KQL. Run raw KQL, keep a git-versioned library
+of parameterized queries, and pipe results straight into your shell.
 
 ## Installation
 
 ```bash
-pip install kq
+pip install kql-cli
 ```
+
+> The command you run is `kq`. The PyPI **package** is named `kql-cli` because
+> `kq` was already taken on PyPI by an unrelated project.
 
 Or from source:
 
@@ -159,6 +168,34 @@ MyTable | where Category == 'Error'
 - **Unix-friendly** - Pipes, scripts, automation
 - **Personal queries** - User queries never overwritten by updates
 
+## Development
+
+```bash
+git clone https://github.com/cptfinch/kq.git
+cd kq
+python -m venv .venv && . .venv/bin/activate
+pip install -e ".[dev]"
+
+pytest            # run tests
+ruff check .      # lint
+python -m build   # build sdist + wheel
+```
+
+CI runs lint + tests across Python 3.9–3.13 on every push and pull request.
+
+### Releasing
+
+Releases publish to PyPI automatically via
+[Trusted Publishing](https://docs.pypi.org/trusted-publishers/) (OIDC — no
+tokens stored in the repo). To cut a release:
+
+1. Bump `__version__` in `src/kq/__init__.py` and update `CHANGELOG.md`.
+2. Tag and push: `git tag v1.2.3 && git push origin v1.2.3`.
+
+The `release.yml` workflow builds the artifacts and publishes them. This
+requires a one-time PyPI setup: configure `kql-cli`'s trusted publisher to point
+at this repository, workflow `release.yml`, environment `pypi`.
+
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
