@@ -69,9 +69,16 @@ def format_csv(results) -> str:
     headers = [col.column_name for col in results.columns]
     csv.writer(output, quoting=csv.QUOTE_ALL, lineterminator="\n").writerow(headers)
 
-    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+    minimal = csv.writer(output, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+    all_quoted = csv.writer(output, quoting=csv.QUOTE_ALL, lineterminator="\n")
     for row in results:
-        writer.writerow([str(v) if v is not None else "" for v in row])
+        cells = [str(v) if v is not None else "" for v in row]
+        # Python < 3.11 does not quote a bare "\r" under an LF line terminator,
+        # so force full quoting for such rows. This keeps CSV output RFC 4180
+        # correct and identical across all supported Python versions while
+        # preserving LF line endings.
+        writer = all_quoted if any("\r" in c for c in cells) else minimal
+        writer.writerow(cells)
 
     # Match the previous formatter's contract: no trailing newline.
     return output.getvalue().removesuffix("\n")
