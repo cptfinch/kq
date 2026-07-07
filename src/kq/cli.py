@@ -1,21 +1,27 @@
 """kq CLI - Command line interface."""
 
-import sys
 import argparse
+import sys
 
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.syntax import Syntax
+from rich.table import Table
 
-from . import __version__
-from . import auth
-from . import client
-from .config import get_config, CONFIG_FILE, USER_QUERIES_DIR
+from . import __version__, auth, client
+from .config import CONFIG_FILE, USER_QUERIES_DIR, get_config
 from .registry import get_registry
 
-
 console = Console()
+
+NO_CLUSTER_MSG = (
+    "No cluster configured. Use --cluster URL "
+    "or run: kq config set default_cluster URL"
+)
+NO_DATABASE_MSG = (
+    "No database configured. Use --database DB "
+    "or configure in cluster settings"
+)
 
 
 def get_cluster_and_db(args):
@@ -41,7 +47,7 @@ def cmd_auth(args):
 
     if args.auth_cmd == "login":
         if not cluster_url:
-            print("No cluster configured. Use --cluster URL or run: kq config set default_cluster URL")
+            print(NO_CLUSTER_MSG)
             return 1
         success = auth.login(cluster_url, device_code=True)
         return 0 if success else 1
@@ -171,7 +177,7 @@ def cmd_run(args):
 
     if not query:
         print(f"Query not found: {args.name}")
-        print(f"Run 'kq list' to see available queries")
+        print("Run 'kq list' to see available queries")
         return 1
 
     # Parse positional params
@@ -201,11 +207,11 @@ def cmd_run(args):
     cluster_url, database = get_cluster_and_db(args)
 
     if not cluster_url:
-        print("No cluster configured. Use --cluster URL or run: kq config set default_cluster URL")
+        print(NO_CLUSTER_MSG)
         return 1
 
     if not database:
-        print("No database configured. Use --database DB or configure in cluster settings")
+        print(NO_DATABASE_MSG)
         return 1
 
     try:
@@ -229,11 +235,11 @@ def cmd_query(args):
     cluster_url, database = get_cluster_and_db(args)
 
     if not cluster_url:
-        print("No cluster configured. Use --cluster URL or run: kq config set default_cluster URL")
+        print(NO_CLUSTER_MSG)
         return 1
 
     if not database:
-        print("No database configured. Use --database DB or configure in cluster settings")
+        print(NO_DATABASE_MSG)
         return 1
 
     try:

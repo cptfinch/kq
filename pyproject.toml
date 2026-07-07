@@ -3,20 +3,23 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kq"
-version = "0.1.0"
-description = "KQL CLI - Query Azure Data Explorer from the command line"
+name = "kql-cli"
+dynamic = ["version"]
+description = "KQL CLI - query Azure Data Explorer (Kusto) from the command line. Like jq, but for KQL."
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.9"
 authors = [
-    { name = "Your Name" }
+    { name = "cptfinch", email = "cptfinch@gmail.com" },
 ]
-keywords = ["kql", "kusto", "azure", "data-explorer", "adx", "cli"]
+keywords = ["kql", "kusto", "azure", "data-explorer", "adx", "cli", "jq"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
-    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -37,24 +40,41 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
+    "ruff>=0.5.0",
+    "build>=1.0.0",
 ]
 
 [project.scripts]
 kq = "kq.cli:main"
 
 [project.urls]
+Homepage = "https://github.com/cptfinch/kq"
 Documentation = "https://github.com/cptfinch/kq#readme"
 Source = "https://github.com/cptfinch/kq"
 Issues = "https://github.com/cptfinch/kq/issues"
+Changelog = "https://github.com/cptfinch/kq/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/kq/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/kq"]
-
-[tool.hatch.build.targets.wheel.force-include]
-"src/kq/queries" = "kq/queries"
 
 [tool.hatch.build.targets.sdist]
 include = [
     "/src",
     "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
