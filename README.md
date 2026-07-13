@@ -10,6 +10,8 @@ KQL CLI — query Azure Data Explorer (Kusto) from the command line.
 Like `jq` for JSON, but for Kusto/KQL. Run raw KQL, keep a git-versioned library
 of parameterized queries, and pipe results straight into your shell.
 
+![kq demo](docs/demo.gif)
+
 ## Installation
 
 ```bash
