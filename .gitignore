@@ -42,7 +42,7 @@ htmlcov/
 # Build
 *.whl
 
-# IBA-specific queries live in the private knowledge-base repo, not here.
+# Personal/local query libraries stay in your own config dir, not in this repo.
 # Anchored to the repo root so it never matches the bundled package data
 # in src/kq/queries/.
 KQL snippets.md
