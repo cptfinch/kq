@@ -13,7 +13,7 @@ of parameterized queries, and pipe results straight into your shell.
 ## Installation
 
 ```bash
-pip install kql-cli
+pip install kql-cli          # or: uv tool install kql-cli
 ```
 
 > The command you run is `kq`. The PyPI **package** is named `kql-cli` because
