@@ -1,11 +1,16 @@
 name: Release
 
-# Publishes to PyPI when a version tag (e.g. v1.0.0) is pushed.
+# Publishes to PyPI and creates a GitHub Release when a version tag
+# (e.g. v1.0.0) is pushed.
 #
 # Uses PyPI Trusted Publishing (OIDC) — no API token or secret is stored in
 # the repo. One-time setup on PyPI: create the "kql-cli" project's trusted
 # publisher pointing at this repo, workflow "release.yml", environment "pypi".
 # See: https://docs.pypi.org/trusted-publishers/
+#
+# Release notes: if docs/RELEASE_NOTES_v<version>.md exists it is used as the
+# release body, otherwise notes are generated from the commit log. Both the
+# publish and release steps are idempotent, so the workflow can be re-run.
 
 on:
   push:
@@ -44,3 +49,43 @@ jobs:
           path: dist/
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # A version already on PyPI can never be re-uploaded, so a re-run of
+          # this workflow would otherwise fail outright. Skip instead.
+          skip-existing: true
+
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write  # required to create the release
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
+        with:
+          name: dist
+          path: dist/
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          notes="docs/RELEASE_NOTES_v${version}.md"
+
+          # Idempotent: a re-run must not fail on an existing release.
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; nothing to do."
+            exit 0
+          fi
+
+          if [ -f "$notes" ]; then
+            echo "Using release notes from $notes"
+            gh release create "$GITHUB_REF_NAME" dist/* \
+              --title "kq $GITHUB_REF_NAME" --notes-file "$notes"
+          else
+            echo "No $notes found; generating notes from commits."
+            gh release create "$GITHUB_REF_NAME" dist/* \
+              --title "kq $GITHUB_REF_NAME" --generate-notes
+          fi
