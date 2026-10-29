@@ -164,11 +164,30 @@ MyTable | where Category == 'Error'
 
 ## Why kq?
 
-- **LLM-native** - Works seamlessly with Claude Code, Copilot, etc.
-- **Portable** - Same queries work across clusters
-- **Versionable** - Git-controlled query libraries
-- **Unix-friendly** - Pipes, scripts, automation
-- **Personal queries** - User queries never overwritten by updates
+**Why not the web UI?** It's excellent for exploring, and a dead end for
+everything after that. You can't pipe a result into a script, diff it, commit
+it, or run it from cron.
+
+**Why not `az kusto`?** That's the control-plane CLI — it creates and manages
+clusters and databases. Actually running a query from your shell means
+hand-rolling `az rest` calls against the cluster's query endpoint and parsing
+the raw JSON yourself.
+
+`kq` is the piece in between: the everyday "run a query, do something with the
+answer" tool.
+
+- **Pipeable** — `-f json` straight into `jq`, `-f csv` straight into a
+  spreadsheet.
+- **Reusable** — parameterized queries in YAML, run by name:
+  `kq run ops.errors checkout 6`.
+- **Versionable** — query libraries live in git next to the code they describe
+  and are shared by the whole team, instead of in one person's browser tabs.
+- **Portable** — the same query runs against dev, staging and prod by swapping
+  `--cluster`.
+- **Yours** — personal queries in `~/.config/kq/queries/` are never overwritten
+  by an update.
+- **Agent-friendly** — deterministic, parseable output that works well with
+  Claude Code, Copilot and friends.
 
 ## Development
 
