@@ -1,56 +1,66 @@
 # kq v1.0.0 — first public release
 
-Paste this into the GitHub Release body when tagging `v1.0.0`.
+Used as the body of the `v1.0.0` GitHub Release. The release workflow picks this
+file up automatically for matching tags (see `.github/workflows/release.yml`).
 
 ---
 
-`kq` is a KQL CLI for Azure Data Explorer (Kusto). Like `jq` for JSON, but for
-KQL — run raw queries, keep a git-versioned library of parameterized queries,
-and pipe results straight into your shell.
+`kq` is a small command-line tool for querying Azure Data Explorer (Kusto).
 
-## Install
+It exists because of a gap: the ADX web UI is lovely for exploring and useless
+for automation, and `az kusto` manages clusters rather than querying them. There
+was no obvious way to just *run a KQL query in a terminal and do something with
+the answer*. So — `jq`, but for Kusto.
 
 ```bash
-pip install kql-cli
+pip install kql-cli        # or: uv tool install kql-cli
 ```
 
-The command is `kq`. (The PyPI package is `kql-cli` because `kq` was already
-taken on PyPI by an unrelated project.)
+The command is `kq`. The package is `kql-cli` because `kq` was already taken on
+PyPI by an unrelated project.
 
-## Quick start
+## Getting started
 
 ```bash
 kq config set default_cluster https://mycluster.westeurope.kusto.windows.net
 kq config set default_database mydb
 kq auth login
 
-kq "MyTable | take 5"                 # raw KQL
-kq "MyTable | take 5" -f json         # or -f csv
-kq list                               # saved queries
-kq run examples.sample MyTable 10     # run a saved query
+kq "MyTable | take 5"                  # raw KQL
+kq "MyTable | take 5" -f json | jq .   # pipe it anywhere
 ```
 
-## Highlights
+## What's in it
 
-- **Raw KQL and saved queries** — run KQL directly, or curate reusable,
-  parameterized queries in YAML and run them by name.
-- **Git-versionable query libraries** — queries resolve from `./.kq/` (project),
-  `~/.config/kq/queries/` (user), then bundled examples. Your queries are never
-  overwritten by updates.
-- **Multi-cluster config** — named clusters, XDG-compliant config in
-  `~/.config/kq/config.yaml`.
-- **Flexible auth** — service principal → Azure CLI → cached device code, with
-  ~90-day silent token refresh (great for WSL/headless).
-- **Output formats** — `table`, `json`, `csv`.
-- **Query safety levels** — mark queries `safe` / `caution` / `dangerous` to
-  keep expensive full-table scans honest.
-- **LLM-native & Unix-friendly** — clean, pipeable output that works well with
-  Claude Code, Copilot, scripts, and automation.
+**Saved queries are the good part.** Write parameterized queries in YAML and run
+them by name:
 
-## Quality
+```bash
+kq run ops.errors checkout 6
+```
 
-- Test suite + `ruff` linting.
-- GitHub Actions CI across Python 3.9–3.13.
-- Published via PyPI Trusted Publishing (OIDC — no stored tokens).
+They resolve from `./.kq/` (project), then `~/.config/kq/queries/` (yours), then
+the bundled examples — so a repo can ship its own query library, your personal
+queries never get clobbered by an update, and the whole thing lives in git
+instead of someone's browser tabs.
 
-**Full changelog:** see [CHANGELOG.md](../CHANGELOG.md).
+**The rest:**
+
+- Raw KQL or saved queries, with `table` / `json` / `csv` output.
+- Multi-cluster config — run the same query against dev, staging or prod.
+- Auth that gets out of the way: service principal → Azure CLI → cached device
+  code, with ~90-day silent refresh (pleasant on WSL and headless boxes).
+- Query safety levels (`safe` / `caution` / `dangerous`) to keep accidental
+  full-table scans honest.
+- Clean, deterministic output — handy for scripts and for coding agents.
+
+## Housekeeping
+
+MIT licensed. Tested on Python 3.9 through 3.13 in CI, linted with `ruff`, and
+published to PyPI via Trusted Publishing (OIDC), so no tokens are stored
+anywhere.
+
+Full details in [CHANGELOG.md](https://github.com/cptfinch/kq/blob/main/CHANGELOG.md).
+
+If you work with Kusto, I'd genuinely like to hear which saved-query patterns
+you'd want built in — [open an issue](https://github.com/cptfinch/kq/issues).
