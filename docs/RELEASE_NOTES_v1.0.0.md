@@ -1,10 +1,3 @@
-# kq v1.0.0 — first public release
-
-Used as the body of the `v1.0.0` GitHub Release. The release workflow picks this
-file up automatically for matching tags (see `.github/workflows/release.yml`).
-
----
-
 `kq` is a small command-line tool for querying Azure Data Explorer (Kusto).
 
 It exists because of a gap: the ADX web UI is lovely for exploring and useless
