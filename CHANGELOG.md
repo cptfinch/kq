@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Planned for 1.1.0.
+
+### Removed
+- Support for Python 3.9, which reached end-of-life in October 2025. `kq` now
+  requires Python 3.10 or newer. Users still on 3.9 can keep using 1.0.0:
+  `pip` selects it automatically on that interpreter.
+
+### Changed
+- CI tests Python 3.10–3.13. All jobs run on the current `ubuntu-latest`
+  runners, which no longer provide Python 3.9.
+- Type hints use the Python 3.10 `X | None` syntax.
+
 ## [1.0.0] - 2026-07-07
 
 First public release on PyPI.
@@ -26,4 +40,5 @@ First public release on PyPI.
 - The tool is distributed on PyPI as **`kql-cli`** (the command remains `kq`),
   because the `kq` name on PyPI is taken by an unrelated project.
 
+[Unreleased]: https://github.com/cptfinch/kq/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/cptfinch/kq/releases/tag/v1.0.0

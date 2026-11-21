@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -54,7 +53,7 @@ class Config:
             yaml.dump(self._config, f, default_flow_style=False)
 
     @property
-    def default_cluster(self) -> Optional[str]:
+    def default_cluster(self) -> str | None:
         """Get default cluster URL."""
         name = self._config.get("default_cluster")
         if name and name in self.clusters:
@@ -62,7 +61,7 @@ class Config:
         return name  # Might be a direct URL
 
     @property
-    def default_database(self) -> Optional[str]:
+    def default_database(self) -> str | None:
         """Get default database."""
         name = self._config.get("default_cluster")
         if name and name in self.clusters:
@@ -74,7 +73,7 @@ class Config:
         """Get configured clusters."""
         return self._config.get("clusters", {})
 
-    def get_cluster(self, name: str) -> Optional[dict]:
+    def get_cluster(self, name: str) -> dict | None:
         """Get cluster config by name."""
         return self.clusters.get(name)
 
@@ -124,7 +123,7 @@ class Config:
 
 
 # Global config instance
-_config: Optional[Config] = None
+_config: Config | None = None
 
 
 def get_config() -> Config:

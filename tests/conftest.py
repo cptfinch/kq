@@ -29,7 +29,7 @@ class FakeResultTable:
 
     def to_dict(self):
         return {
-            "data": [dict(zip(self._column_names, row)) for row in self._rows],
+            "data": [dict(zip(self._column_names, row, strict=True)) for row in self._rows],
         }
 
 
