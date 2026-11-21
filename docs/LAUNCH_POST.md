@@ -64,7 +64,7 @@ A few other things it does:
   full-table scans honest.
 - **Plays nicely with LLM coding agents** — clean, deterministic output.
 
-It's MIT-licensed, tested on Python 3.9–3.13, and on PyPI as `kql-cli`.
+It's MIT-licensed, tested on Python 3.10–3.13, and on PyPI as `kql-cli`.
 
 Repo: https://github.com/cptfinch/kq
 
@@ -90,7 +90,7 @@ querying Azure Data Explorer from the terminal, instead of the web UI or
 - Auth chain: service principal → Azure CLI → cached device code (~90-day refresh)
 - Query safety levels to flag expensive scans
 
-`pip install kql-cli` (the command is `kq`). MIT, tested on 3.9–3.13.
+`pip install kql-cli` (the command is `kq`). MIT, tested on 3.10–3.13.
 
 https://github.com/cptfinch/kq
 

@@ -202,7 +202,7 @@ ruff check .      # lint
 python -m build   # build sdist + wheel
 ```
 
-CI runs lint + tests across Python 3.9–3.13 on every push and pull request.
+CI runs lint + tests across Python 3.10–3.13 on every push and pull request.
 
 ### Releasing
 

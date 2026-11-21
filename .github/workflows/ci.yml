@@ -24,13 +24,11 @@ jobs:
         run: ruff check src tests
 
   test:
-    # ubuntu-latest (26.04+) ships no Python 3.9 build; 3.9 is end-of-life,
-    # so keep it on the last runner image that still provides it.
-    runs-on: ${{ matrix.python-version == '3.9' && 'ubuntu-24.04' || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6

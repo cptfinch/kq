@@ -1,7 +1,6 @@
 """Query registry - manage saved/curated queries."""
 
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -79,7 +78,7 @@ class Registry:
                 for yaml_file in path.glob("*.yml"):
                     self._load_yaml(yaml_file)
 
-    def get(self, name: str) -> Optional[Query]:
+    def get(self, name: str) -> Query | None:
         """Get a query by full name (category.name)."""
         return self.queries.get(name)
 
@@ -103,7 +102,7 @@ class Registry:
 
 
 # Global registry instance
-_registry: Optional[Registry] = None
+_registry: Registry | None = None
 
 
 def get_registry() -> Registry:
