@@ -6,7 +6,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-Planned for 1.1.0.
+## [1.1.0] - 2026-11-21
 
 ### Removed
 - Support for Python 3.9, which reached end-of-life in October 2025. `kq` now
@@ -17,6 +17,13 @@ Planned for 1.1.0.
 - CI tests Python 3.10–3.13. All jobs run on the current `ubuntu-latest`
   runners, which no longer provide Python 3.9.
 - Type hints use the Python 3.10 `X | None` syntax.
+- The README (also the PyPI project page) adds a demo recording, a "Why kq?"
+  section comparing it with the ADX web UI and `az kusto`, and a
+  `uv tool install kql-cli` option.
+
+### Fixed
+- README links to the demo GIF and the license are absolute, so they work on
+  PyPI as well as on GitHub.
 
 ## [1.0.0] - 2026-07-07
 
@@ -40,5 +47,6 @@ First public release on PyPI.
 - The tool is distributed on PyPI as **`kql-cli`** (the command remains `kq`),
   because the `kq` name on PyPI is taken by an unrelated project.
 
-[Unreleased]: https://github.com/cptfinch/kq/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/cptfinch/kq/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/cptfinch/kq/releases/tag/v1.1.0
 [1.0.0]: https://github.com/cptfinch/kq/releases/tag/v1.0.0
