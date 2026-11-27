@@ -8,7 +8,7 @@ Usage:
     kq auth login               # Authenticate
     kq list                     # List saved queries
     kq run <query> [params...]  # Run a saved query
-    kq "PLC | take 5"           # Run raw KQL
+    kq "MyTable | take 5"       # Run raw KQL
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"

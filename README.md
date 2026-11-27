@@ -3,14 +3,14 @@
 [![CI](https://github.com/cptfinch/kq/actions/workflows/ci.yml/badge.svg)](https://github.com/cptfinch/kq/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/kql-cli.svg)](https://pypi.org/project/kql-cli/)
 [![Python versions](https://img.shields.io/pypi/pyversions/kql-cli.svg)](https://pypi.org/project/kql-cli/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cptfinch/kq/blob/main/LICENSE)
 
 KQL CLI — query Azure Data Explorer (Kusto) from the command line.
 
 Like `jq` for JSON, but for Kusto/KQL. Run raw KQL, keep a git-versioned library
 of parameterized queries, and pipe results straight into your shell.
 
-![kq demo](docs/demo.gif)
+![kq demo](https://raw.githubusercontent.com/cptfinch/kq/main/docs/demo.gif)
 
 ## Installation
 
@@ -219,4 +219,4 @@ at this repository, workflow `release.yml`, environment `pypi`.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](https://github.com/cptfinch/kq/blob/main/LICENSE).
