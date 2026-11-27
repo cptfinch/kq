@@ -6,7 +6,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.1.0] - 2026-11-21
+## [1.1.0] - 2026-11-27
 
 ### Removed
 - Support for Python 3.9, which reached end-of-life in October 2025. `kq` now
